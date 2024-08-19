@@ -1,0 +1,9 @@
+main section{
+    scale: 0;
+    transition: 1s;
+}
+
+.visible{
+    scale: 1;
+    transition: 1s;
+}

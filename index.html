@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Game de adivinhar um número sortido. Usando html, css e JS">
+    <meta name="keywords" content="web, developer, number, guess, game">
+    <meta name="author" content="Camila, Giovana, Keila e Paulo">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="img/icon.png" type="image/x-icon">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script defer src="js/function.js"></script>
+
+    <title>Guess the number</title>
+</head>
+
+<body>
+
+    <main>
+        <h1>Hello, World!</h1>
+        <h2>Wellcome to the game: Guess the number</h2>
+
+
+        <div>
+            <label>Type a number:</label>
+            <button type="button" id="draw">Draw a number</button>
+
+            <p id="message"></p>
+        </div>
+
+        <section id="guess-form" class="">
+            <div>
+                <label>Type a number:</label>
+                <input type="number" id="number-guess" placeholder="my guess number is..." pattern="[0-9]" min="0" max="99"/>
+                <!--  onkeypress="$(this).mask(`00`)" -->
+            </div>
+            <div>
+                <button type="button" id="test">try the guess</button>
+            </div>
+        </section>
+    </main>
+</body>
+
+</html>
