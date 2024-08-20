@@ -43,6 +43,7 @@ main section{
     border: none; 
     background-color: transparent; 
     outline: none; 
+    width: 150px;
     color: var(--color-white); 
     font-size: 1rem; 
     padding: .4rem; 
