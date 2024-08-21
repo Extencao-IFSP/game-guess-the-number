@@ -15,24 +15,40 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script defer src="js/function.js"></script>
 
-    <title id="gametitle">Game Sorteador de Número</title> 
+    <title id="gametitle">Game Sorteador de Número</title>
 </head>
 
 <body>
 
     <main>
-        <div class="content"> 
-            <h1>Bem-vindo(a) ao jogo descubra o número!</h1> 
-            <button class="glow-on-hover" type="button" id="draw">Iniciar</button>
+        <section>
+            <div id="main" class="content glass">
+                <h1>Inicie para sortear um número!</h1>
+                <div class="radio-input">
+                    <label class="label">
+                        <input type="radio" id="value-1" checked="" name="value-radio" value="value-1" />
+                        <p class="text">Fácil (1 a 10)</p>
+                    </label>
+                    <label class="label">
+                        <input type="radio" id="value-2" name="value-radio" value="value-2" />
+                        <p class="text">Médio (1 a 25)</p>
+                    </label>
+                    <label class="label">
+                        <input type="radio" id="value-3" name="value-radio" value="value-3" />
+                        <p class="text">Difícil (1 a 50)</p>
+                    </label>
+                </div>
+                <button class="glow-on-hover" type="button" id="draw">Iniciar</button>
 
-            <p id="message"></p>
-        </div>
 
-        <section id="guess-form" class="">
-            <div class="content"> 
+                <div id="spinner" class="spinner hidden"></div>
+                <br>
+                <p id="message" class="hidden"></p>
+            </div>
+            <div id="guesser" class="content glass">
                 <h1>Descubra o número</h1>
-                <input type="number" id="number-guess" placeholder="Insira um número" pattern="[0-9]" min="0" max="99"/>
-                <!--  onkeypress="$(this).mask(`00`)" -->
+                <input type="number" id="number-guess" placeholder="Insira um número" pattern="[0-9]" min="0"
+                    max="99" />
                 <button class="glow-on-hover" type="button" id="test">Testar</button>
             </div>
         </section>

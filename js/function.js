@@ -1,59 +1,104 @@
-let number
+$(document).on('keyup', function (event) {
+    if (event.which === 13 && bool) {
+        testar();
+    }
+});
 
-// sortear numero
-const draw = document.getElementById("draw")
+let number, bool = false, tentativa;
 
 draw.addEventListener("click", function () {
-    const msg = document.getElementById("message")
-    let min = 10, max = 20
+    const draw = document.getElementById("draw");
+    const spinner = document.getElementById("spinner");
+    const msg = document.getElementById("message");
+
+    // Determina a dificuldade com base no botão de rádio selecionado
+    const selectedDifficulty = document.querySelector('input[name="value-radio"]:checked').value;
+    let min, max;
+
+    switch (selectedDifficulty) {
+        case "value-1": // Fácil
+            min = 1;
+            max = 10;
+            tentativa = 3;
+            break;
+        case "value-2": // Médio
+            min = 1;
+            max = 25;
+            tentativa = 4;
+            break;
+        case "value-3": // Difícil
+            min = 1;
+            max = 50;
+            tentativa = 5;
+            break;
+        default:
+            min = 10;
+            max = 20;
+            tentativa = 3;
+    }
+
+    // Mostra o spinner e oculta o botão
+    spinner.classList.remove("hidden");
+    msg.classList.remove("hidden");
+    draw.classList.add("hidden");
 
     number = Math.floor(Math.random() * (max - min + 1)) + min;
-    msg.innerText = "teste"
-    delay(2500)
-    console.log(number)
-    msg.innerText = null
 
-    show()
-})
+    msg.innerText = "Sorteando, aguarde...";
+
+    // Aguarda 2.5 segundos
+    delay(2500).then(() => {
+        console.log(number);
+        msg.innerText = "";
+        show();
+
+        // Esconde o spinner e mostra o botão
+        spinner.classList.add("hidden");
+        draw.classList.remove("hidden");
+    });
+});
 
 const show = () => {
+    const form = document.getElementById("guesser");
+    form.classList.add("visible");
 
-    const form = document.getElementById("guess-form")
-    form.classList = "visible"
+    const main = document.getElementById("main");
+    main.style.display = "none";
 
-}
+    bool = true;
+};
 
-// testar numero sorteado
-const test = document.getElementById("test")
-let cont = 3 
+const test = document.getElementById("test");
+
 test.addEventListener("click", function () {
-    const numInput = document.getElementById("number-guess")
-    let numGuess = parseInt(numInput.value)
+    testar();
+});
+
+const testar = () => {
+    const numInput = document.getElementById("number-guess");
+    let numGuess = parseInt(numInput.value);
 
     if (numGuess === number) {
-        alert("Well done! You got it!")
+        alert("Bem feito! Você acertou!");
 
-        let text;
-        if (confirm("Try again?") == true) {
-            location.reload()
-        } else {
-            
+        if (confirm("Tentar novamente?")) {
+            location.reload();
         }
-    }
-    else {
-        cont--
-        if(cont === 0) lost()
-        alert(`Wrong! Try more ${cont} times`)
-    }
-}
-)
 
-const lost = () =>{
-    alert("You lose! Try again later.")
-    location.reload()
-}
+        bool = false;
+    } else {
+        tentativa--;
+        alert(`Errado! Tente mais ${tentativa} vezes`);
+        if (tentativa === 0) lost();
+    }
+};
 
-//other one
+const lost = () => {
+    alert("Você perdeu! Tente novamente mais tarde.");
+    location.reload();
+};
+
+// Função de atraso
 const delay = async (ms) => {
     return new Promise((resolve) => {
         setTimeout(resolve, ms);
