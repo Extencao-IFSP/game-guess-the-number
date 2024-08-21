@@ -58,7 +58,7 @@ draw.addEventListener("click", function () {
     });
 
     document.getElementById("range").innerText = `Escolha um número entre ${min} e ${max}`
-    document.getElementById("tentativas").innerText = `Tentativas restantes: ${tentativa}` 
+    document.getElementById("tentativas").innerText = `Tentativas restantes: ${tentativa}`
 });
 
 const show = () => {
@@ -78,29 +78,95 @@ test.addEventListener("click", function () {
 });
 
 const testar = () => {
-    const numInput = document.getElementById("number-guess");
-    let numGuess = parseInt(numInput.value);
 
-    if (numGuess === number) {
-        alert("Bem feito! Você acertou!");
+    if (tentativa > 0) {
+        const numInput = document.getElementById("number-guess");
+        let numGuess = parseInt(numInput.value);
 
-        if (confirm("Tentar novamente?")) {
-            location.reload();
+        if (numGuess === number) {
+            showNotification("Bem feito! Você acertou!");
+
+            showConfirm("Deseja tentar novamente?", function (result) {
+                if (result) {
+                    location.reload();
+                } else {
+
+                }
+            });
+
+            bool = false;
+        } else {
+            tentativa--;
+            document.getElementById("tentativas").innerText = `Tentativas restantes: ${tentativa}`
+            showNotification(`Errado! Tente mais ${tentativa} vezes`);
+            if (tentativa === 0) lost();
         }
-
-        bool = false;
-    } else {
-        tentativa--;
-        alert(`Errado! Tente mais ${tentativa} vezes`);
-        if (tentativa === 0) lost();
     }
 };
 
 const lost = () => {
 
-    alert(`Você perdeu! O número era: ${number}\nJogue mais outra vez`);
-    location.reload();
+    showNotification(`Você perdeu! O número era: ${number} <br>Tente novamente!`);
+    showConfirm("Deseja tentar novamente?", function (result) {
+        if (result) {
+            location.reload();
+        } else {
+
+        }
+    })
 };
+
+function showNotification(message, duration = 8000) {
+    const notification = document.getElementById("notification");
+    const notificationMessage = document.getElementById("notification-message");
+
+    notificationMessage.innerHTML = message;
+    notification.classList.remove("hidden");
+    notification.classList.add("visible");
+
+    setTimeout(() => {
+        notification.classList.remove("visible");
+        notification.classList.add("hidden");
+    }, duration);
+}
+
+function closeNotification() {
+    const notification = document.getElementById("notification");
+    notification.classList.remove("visible");
+    notification.classList.add("hidden");
+}
+
+function showConfirm(message, callback) {
+    const confirmDialog = document.getElementById("confirm-dialog");
+    const confirmMessage = document.getElementById("confirm-message");
+    const yesButton = document.getElementById("confirm-yes");
+    const noButton = document.getElementById("confirm-no");
+
+    confirmMessage.textContent = message;
+    confirmDialog.classList.remove("hidden");
+    confirmDialog.classList.add("visible");
+
+    // Se o usuário clicar em "Sim"
+    yesButton.onclick = function () {
+        callback(true);
+        closeConfirm();
+    };
+
+    // Se o usuário clicar em "Não"
+    noButton.onclick = function () {
+        callback(false);
+        closeConfirm();
+    };
+}
+
+
+
+function closeConfirm() {
+    const confirmDialog = document.getElementById("confirm-dialog");
+    confirmDialog.classList.remove("visible");
+    confirmDialog.classList.add("hidden");
+}
+
 
 // Função de atraso
 const delay = async (ms) => {

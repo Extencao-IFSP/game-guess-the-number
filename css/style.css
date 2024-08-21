@@ -1,3 +1,7 @@
+* {
+    box-sizing: 0;
+}
+
 :root {
     --color-white: #fff;
     --color-black: #000;
@@ -21,7 +25,7 @@ body {
 }
 
 section {
-    color: white;
+    color: var(--color-white);
     backdrop-filter: blur(5px) saturate(200%);
     -webkit-backdrop-filter: blur(5px) saturate(200%);
     background-color: rgba(17, 25, 40, 0.6);
@@ -287,6 +291,102 @@ section {
     font-size: 0.6rem;
     margin-top: -1rem;
     color: #dcdcdc;
+}
+
+
+/* Estilos para a caixa de notificação */
+.notification {
+    position: fixed;
+    top: 1.2rem;
+    right: 1.2rem;
+    padding: 15px 25px;
+    background-color: var(--color-purple);
+    /* Cor de fundo da notificação */
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+.notification.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.notification.hidden {
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 15px;
+}
+
+.confirm-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px 30px;
+    background-color: #333;
+    /* Cor de fundo da caixa de diálogo */
+    color: white;
+    font-size: 18px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.confirm-dialog.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.confirm-dialog.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.confirm-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.confirm-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    outline: none;
+}
+
+.yes-btn {
+    background-color: #4CAF50;
+    /* Cor do botão de "Sim" */
+    color: white;
+}
+
+.no-btn {
+    background-color: #f44336;
+    /* Cor do botão de "Não" */
+    color: white;
 }
 
 .hidden {
