@@ -7,34 +7,43 @@ $(document).on('keyup', function (event) {
 let number, bool = false, tentativa;
 
 draw.addEventListener("click", function () {
+    random()
+});
+
+const random = () => {
     const draw = document.getElementById("draw");
     const spinner = document.getElementById("spinner");
     const msg = document.getElementById("message");
+    document.getElementById("number-guess").value = null
 
     // Determina a dificuldade com base no botão de rádio selecionado
     const selectedDifficulty = document.querySelector('input[name="value-radio"]:checked').value;
-    let min, max;
+    let min, max, level;
 
     switch (selectedDifficulty) {
         case "value-1": // Fácil
             min = 1;
             max = 10;
             tentativa = 3;
+            level = "Fácil"
             break;
         case "value-2": // Médio
             min = 1;
             max = 25;
             tentativa = 4;
+            level = "Médio"
             break;
         case "value-3": // Difícil
             min = 1;
             max = 50;
             tentativa = 5;
+            level = "Difícil"
             break;
         default:
             min = 10;
             max = 20;
             tentativa = 3;
+            level = "Default"
     }
 
     // Mostra o spinner e oculta o botão
@@ -57,9 +66,9 @@ draw.addEventListener("click", function () {
         draw.classList.remove("hidden");
     });
 
-    document.getElementById("range").innerText = `Escolha um número entre ${min} e ${max}`
+    document.getElementById("range").innerText = `Escolha um número entre ${min} e ${max}. (${level})`
     document.getElementById("tentativas").innerText = `Tentativas restantes: ${tentativa}`
-});
+}
 
 const show = () => {
     const form = document.getElementById("guesser");
@@ -83,23 +92,29 @@ const testar = () => {
         const numInput = document.getElementById("number-guess");
         let numGuess = parseInt(numInput.value);
 
-        if (numGuess === number) {
-            showNotification("Muito bem! Você acertou!");
-            bool = false
-            showConfirm("Deseja tentar novamente?", function (result) {
-                if (result) {
-                    location.reload();
-                } else {
-
-                }
-            });
-
-            bool = false;
+        if (isNaN(numGuess)) {
+            showNotification("Digite um número!")
+            return
         } else {
-            tentativa--;
-            document.getElementById("tentativas").innerText = `Tentativas restantes: ${tentativa}`
-            showNotification(`Errado! o número sorteado é <b>${numGuess > number ? 'menor!' : 'maior!'}</b><br>Tente mais <b>${tentativa}</b> vezes`);
-            if (tentativa === 0) lost();
+
+            if (numGuess === number) {
+                showNotification("Muito bem! Você acertou!");
+                bool = false
+                showConfirm("Deseja jogar novamente?", function (result) {
+                    if (result) {
+                        random()
+                    } else {
+                        location.reload();
+                    }
+                });
+
+                bool = false;
+            } else {
+                tentativa--;
+                document.getElementById("tentativas").innerText = `Tentativas restantes: ${tentativa}`
+                showNotification(`Errado! o número sorteado é <b>${numGuess > number ? 'menor!' : 'maior!'}</b><br>Tente mais <b>${tentativa}</b> vezes`);
+                if (tentativa === 0) lost();
+            }
         }
     }
 };
@@ -109,9 +124,9 @@ const lost = () => {
     showNotification(`Você perdeu! O número era: ${number} <br>Tente novamente!`);
     showConfirm("Deseja tentar novamente?", function (result) {
         if (result) {
-            location.reload();
+            random()
         } else {
-
+            location.reload();
         }
     })
 };
