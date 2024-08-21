@@ -4,7 +4,7 @@ $(document).on('keyup', function (event) {
     }
 });
 
-let number, bool = false, tentativa;
+let number, bool = false, tentativa, lvl = null;
 
 draw.addEventListener("click", function () {
     random()
@@ -16,28 +16,34 @@ const random = () => {
     const msg = document.getElementById("message");
     document.getElementById("number-guess").value = null
 
-    // Determina a dificuldade com base no botão de rádio selecionado
-    const selectedDifficulty = document.querySelector('input[name="value-radio"]:checked').value;
+    const selectedDifficulty = lvl === null ? document.querySelector('input[name="value-radio"]:checked').value : lvl;
+
     let min, max, level;
 
     switch (selectedDifficulty) {
-        case "value-1": // Fácil
+        case "value-1":
+        case 1:  // Combine os casos dessa forma
             min = 1;
             max = 10;
             tentativa = 3;
-            level = "Fácil"
+            level = "Fácil";
+            lvl = 1;
             break;
-        case "value-2": // Médio
+        case "value-2":
+        case 2: // Médio
             min = 1;
             max = 25;
             tentativa = 4;
             level = "Médio"
+            lvl = 2;
             break;
-        case "value-3": // Difícil
+        case "value-3":
+        case 3: // Difícil
             min = 1;
             max = 50;
             tentativa = 5;
             level = "Difícil"
+            lvl = 3;
             break;
         default:
             min = 10;
@@ -55,7 +61,6 @@ const random = () => {
 
     msg.innerText = "Sorteando, aguarde...";
 
-    // Aguarda 2.5 segundos
     delay(2500).then(() => {
         console.log(number);
         msg.innerText = "";
@@ -86,9 +91,9 @@ test.addEventListener("click", function () {
     testar();
 });
 
-const testar = () => {
+const testar = async () => {
 
-    if (tentativa > 0 && bool) {
+    if (tentativa > 0) {
         const numInput = document.getElementById("number-guess");
         let numGuess = parseInt(numInput.value);
 
@@ -99,20 +104,19 @@ const testar = () => {
 
             if (numGuess === number) {
                 showNotification("Muito bem! Você acertou!");
-                bool = false
-                showConfirm("Deseja jogar novamente?", function (result) {
-                    if (result) {
-                        random()
-                    } else {
-                        location.reload();
-                    }
-                });
-
                 bool = false;
+
+                const result = await showConfirm("Deseja passar para o próximo nível?");
+                if (result) {
+                    lvl++;
+                    random();
+                } else {
+                    playAgain();
+                }
             } else {
                 tentativa--;
-                document.getElementById("tentativas").innerText = `Tentativas restantes: ${tentativa}`
-                showNotification(`Errado! o número sorteado é <b>${numGuess > number ? 'menor!' : 'maior!'}</b><br>Tente mais <b>${tentativa}</b> vezes`);
+                document.getElementById("tentativas").innerText = `Tentativas restantes: ${tentativa}`;
+                showNotification(`Errado! O número sorteado é <b>${numGuess > number ? 'menor!' : 'maior!'}</b><br>Tente mais <b>${tentativa}</b> vezes`);
                 if (tentativa === 0) lost();
             }
         }
@@ -120,15 +124,18 @@ const testar = () => {
 };
 
 const lost = () => {
-
     showNotification(`Você perdeu! O número era: ${number} <br>Tente novamente!`);
-    showConfirm("Deseja tentar novamente?", function (result) {
+    playAgain();
+};
+
+const playAgain = () => {
+    showConfirm("Deseja tentar novamente?").then((result) => {
         if (result) {
-            random()
+            random();
         } else {
             location.reload();
         }
-    })
+    });
 };
 
 function showNotification(message, duration = 8000) {
@@ -145,33 +152,27 @@ function showNotification(message, duration = 8000) {
     }, duration);
 }
 
-function closeNotification() {
-    const notification = document.getElementById("notification");
-    notification.classList.remove("visible");
-    notification.classList.add("hidden");
-}
+function showConfirm(message) {
+    return new Promise((resolve) => {
+        const confirmDialog = document.getElementById("confirm-dialog");
+        const confirmMessage = document.getElementById("confirm-message");
+        const yesButton = document.getElementById("confirm-yes");
+        const noButton = document.getElementById("confirm-no");
 
-function showConfirm(message, callback) {
-    const confirmDialog = document.getElementById("confirm-dialog");
-    const confirmMessage = document.getElementById("confirm-message");
-    const yesButton = document.getElementById("confirm-yes");
-    const noButton = document.getElementById("confirm-no");
+        confirmMessage.textContent = message;
+        confirmDialog.classList.remove("hidden");
+        confirmDialog.classList.add("visible");
 
-    confirmMessage.textContent = message;
-    confirmDialog.classList.remove("hidden");
-    confirmDialog.classList.add("visible");
+        yesButton.onclick = function () {
+            resolve(true);
+            closeConfirm();
+        };
 
-    // Se o usuário clicar em "Sim"
-    yesButton.onclick = function () {
-        callback(true);
-        closeConfirm();
-    };
-
-    // Se o usuário clicar em "Não"
-    noButton.onclick = function () {
-        callback(false);
-        closeConfirm();
-    };
+        noButton.onclick = function () {
+            resolve(false);
+            closeConfirm();
+        };
+    });
 }
 
 function closeConfirm() {
