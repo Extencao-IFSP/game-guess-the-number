@@ -56,6 +56,9 @@ draw.addEventListener("click", function () {
         spinner.classList.add("hidden");
         draw.classList.remove("hidden");
     });
+
+    document.getElementById("range").innerText = `Escolha um número entre ${min} e ${max}`
+    document.getElementById("tentativas").innerText = `Tentativas restantes: ${tentativa}` 
 });
 
 const show = () => {
@@ -94,7 +97,8 @@ const testar = () => {
 };
 
 const lost = () => {
-    alert("Você perdeu! Tente novamente mais tarde.");
+
+    alert(`Você perdeu! O número era: ${number}\nJogue mais outra vez`);
     location.reload();
 };
 

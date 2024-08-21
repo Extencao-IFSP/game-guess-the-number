@@ -13,6 +13,7 @@ body {
     min-height: 100vh;
     background: url(../img/fundodetela.gif) center center repeat-x;
     color: var(--color-black);
+    background-repeat: no-repeat;
 }
 
 body {
@@ -26,7 +27,7 @@ section {
     background-color: rgba(17, 25, 40, 0.6);
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.125);
-    height: 70dvh;
+    height: 75%;
     min-width: 31rem;
     display: flex;
     justify-content: center;
@@ -274,6 +275,18 @@ section {
     100% {
         transform: rotate(360deg);
     }
+}
+
+#range {
+    font-size: 0.85rem;
+    margin-top: -1rem;
+    color: #dcdcdc;
+}
+
+#tentativas {
+    font-size: 0.6rem;
+    margin-top: -1rem;
+    color: #dcdcdc;
 }
 
 .hidden {
