@@ -98,7 +98,7 @@ const testar = () => {
         } else {
             tentativa--;
             document.getElementById("tentativas").innerText = `Tentativas restantes: ${tentativa}`
-            showNotification(`Errado! o número sorteado é ${numGuess > number ? 'menor!' : 'maior!'}<br>Tente mais ${tentativa} vezes`);
+            showNotification(`Errado! o número sorteado é <b>${numGuess > number ? 'menor!' : 'maior!'}</b><br>Tente mais <b>${tentativa}</b> vezes`);
             if (tentativa === 0) lost();
         }
     }
