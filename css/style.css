@@ -16,6 +16,7 @@ body {
     align-items: center;
     min-height: 100vh;
     background: url(../img/fundodetela.gif) center center repeat-x;
+    background-color: #1e1e1e;
     color: var(--color-black);
     background-repeat: no-repeat;
 }
@@ -64,8 +65,6 @@ section {
     display: flex;
     opacity: 1;
 }
-
-
 
 .content {
     display: flex;
@@ -350,6 +349,7 @@ section {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease-in-out;
+    width: auto;
 }
 
 .confirm-dialog.visible {
@@ -391,4 +391,38 @@ section {
 
 .hidden {
     display: none;
+}
+
+@media (max-width: 700px) {
+    section {
+        width: 90dvw;
+        min-width: unset;
+        padding: 1rem;
+    }
+
+    .content {
+        padding: 2rem 1.5rem;
+    }
+
+    .radio-input label {
+        padding: 0 10px;
+        height: 45px;
+        font-size: 0.9rem;
+    }
+
+    .content input {
+        font-size: 1.1rem;
+        max-width: 150px;
+    }
+
+    .glow-on-hover {
+        width: 100%;
+        height: 2.5rem;
+        font-size: 0.9rem;
+    }
+
+    #range,
+    #tentativas {
+        font-size: 0.75rem;
+    }
 }

@@ -79,13 +79,13 @@ test.addEventListener("click", function () {
 
 const testar = () => {
 
-    if (tentativa > 0) {
+    if (tentativa > 0 && bool) {
         const numInput = document.getElementById("number-guess");
         let numGuess = parseInt(numInput.value);
 
         if (numGuess === number) {
-            showNotification("Bem feito! Você acertou!");
-
+            showNotification("Muito bem! Você acertou!");
+            bool = false
             showConfirm("Deseja tentar novamente?", function (result) {
                 if (result) {
                     location.reload();
@@ -98,7 +98,7 @@ const testar = () => {
         } else {
             tentativa--;
             document.getElementById("tentativas").innerText = `Tentativas restantes: ${tentativa}`
-            showNotification(`Errado! Tente mais ${tentativa} vezes`);
+            showNotification(`Errado! o número sorteado é ${numGuess > number ? 'menor!' : 'maior!'}<br>Tente mais ${tentativa} vezes`);
             if (tentativa === 0) lost();
         }
     }
@@ -159,14 +159,11 @@ function showConfirm(message, callback) {
     };
 }
 
-
-
 function closeConfirm() {
     const confirmDialog = document.getElementById("confirm-dialog");
     confirmDialog.classList.remove("visible");
     confirmDialog.classList.add("hidden");
 }
-
 
 // Função de atraso
 const delay = async (ms) => {
